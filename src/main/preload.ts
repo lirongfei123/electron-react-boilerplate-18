@@ -1,21 +1,35 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example';
-
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {
-    sendMessage(channel: Channels, args: unknown[]) {
-      ipcRenderer.send(channel, args);
+    myPing() {
+      ipcRenderer.send('ipc-example', 'pi1111ng');
     },
-    on(channel: Channels, func: (...args: unknown[]) => void) {
-      const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
-        func(...args);
-      ipcRenderer.on(channel, subscription);
+    sendToMain(eventName: string, data: object) {
+      ipcRenderer.send(eventName, data);
+    },
+    getDuraton() {
+      ipcRenderer.send('getDuraton');
+    },
+    on(channel: string, func: (...args: unknown[]) => void) {
+      const validChannels = ['ipc-example', 'getDuraton', 'test-reply', 'setting-value', 'vip-value', 'accessibilitySupportEnabled', 'sendConfigInfo'];
+      if (validChannels.includes(channel)) {
+        const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
+          func(...args);
+        // Deliberately strip event as it includes `sender`
+        ipcRenderer.on(channel, subscription);
 
-      return () => ipcRenderer.removeListener(channel, subscription);
+        return () => ipcRenderer.removeListener(channel, subscription);
+      }
+
+      return undefined;
     },
-    once(channel: Channels, func: (...args: unknown[]) => void) {
-      ipcRenderer.once(channel, (_event, ...args) => func(...args));
+    once(channel: string, func: (...args: unknown[]) => void) {
+      const validChannels = ['ipc-example', 'getDuraton'];
+      if (validChannels.includes(channel)) {
+        // Deliberately strip event as it includes `sender`
+        ipcRenderer.once(channel, (_event, ...args) => func(...args));
+      }
     },
   },
 });

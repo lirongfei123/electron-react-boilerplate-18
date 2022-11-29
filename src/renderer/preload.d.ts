@@ -1,10 +1,9 @@
-import { Channels } from 'main/preload';
-
 declare global {
   interface Window {
     electron: {
       ipcRenderer: {
-        sendMessage(channel: Channels, args: unknown[]): void;
+        myPing(): void;
+        sendToMain(eventName: string, data: object):void;
         on(
           channel: string,
           func: (...args: unknown[]) => void

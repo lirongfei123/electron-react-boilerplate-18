@@ -14,5 +14,9 @@
     "postinstall": "npm run electron-rebuild && npm run link-modules",
     "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
   },
-  "dependencies": {}
+  "dependencies": {
+    "iohook-electron": "^0.9.6",
+    "robotjs": "^0.6.0",
+    "node-abi": "^3.28.0"
+  }
 }

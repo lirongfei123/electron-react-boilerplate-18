@@ -1,0 +1,20 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+$icon-font-path: "https://at.alicdn.com/t/font_515771_xjdbujl2iu";
+@import "~@alifd/next/index.scss";
+body {
+  position: relative;
+  height: 100vh;
+  font-family: sans-serif;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+#root {
+  width: 100%;
+  padding: 20px;
+}
